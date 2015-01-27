@@ -1,10 +1,10 @@
 FROM phusion/baseimage:latest
 MAINTAINER UserTaken <elysian@live.com>
-RUN apt-get update && apt-get install htop screen net-tools expect man xserver-xorg-core \
+RUN apt-get update && apt-get install htop net-tools expect man xserver-xorg-core \
 	make gcc g++ patch libreadline-dev libssl-dev libpq5 libpq-dev zlib1g-dev \
 	libreadline5 libsqlite3-dev libpcap-dev autoconf git postgresql openjdk-7-jdk\
-	libxml2-dev libxslt1-dev libyaml-dev ruby ruby-dev python lxde firefox \
-	-y --no-install-recommends
+	libxml2-dev libxslt1-dev libyaml-dev ruby ruby-dev python lxde netsurf \
+	x11-xserver-utils -y --no-install-recommends
 
 RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20141210git74cff2e4-3ubuntu1_amd64.deb && \
 	dpkg -i *.deb || apt-get install -fy --no-install-recommends && rm *.deb
@@ -50,7 +50,6 @@ RUN mkdir /root/.vnc /root/Desktop && \
 
 ADD vncpasswd /etc/my_init.d/
 ADD database.yml /opt/metasploit-framework/config/
-ADD README.md /root/
 ENV MSF_DATABASE_CONFIG /opt/metasploit-framework/config/database.yml
 WORKDIR /root
 EXPOSE 59000
