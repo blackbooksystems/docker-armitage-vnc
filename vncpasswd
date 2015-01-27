@@ -9,9 +9,9 @@ fi
 expect <<EOF
 	spawn vncpasswd
 	expect {
-		-exact "Password:" { send "$PASS\r"; exp_continue } &>/dev/null
-		-exact "Verify:" { send "$PASS\r"; exp_continue } &>/dev/null
-		-exact "Would you like to enter a view-only password \(y/n\)?" { send "n\r"; exp_continue } &>/dev/null
+		-exact "Password:" { send "$PASS\r"; exp_continue }
+		-exact "Verify:" { send "$PASS\r"; exp_continue }
+		-exact "Would you like to enter a view-only password \(y/n\)?" { send "n\r"; exp_continue }
 	}
 EOF
 
