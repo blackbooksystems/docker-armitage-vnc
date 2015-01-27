@@ -1,4 +1,5 @@
 FROM phusion/baseimage:latest
+MAINTAINER UserTaken <elysian@live.com>
 RUN apt-get update && apt-get install htop screen net-tools expect man xserver-xorg-core \
 	make gcc g++ patch libreadline-dev libssl-dev libpq5 libpq-dev zlib1g-dev \
 	libreadline5 libsqlite3-dev libpcap-dev autoconf git postgresql openjdk-7-jdk\
@@ -45,6 +46,7 @@ RUN mkdir /root/.vnc /root/Desktop && \
 	echo -n /root > /etc/container_environment/HOME
 
 ADD startx /usr/bin/
+ADD vncpasswd /etc/my_init.d/
 ADD database.yml /opt/metasploit-framework/config/
 ENV MSF_DATABASE_CONFIG /opt/metasploit-framework/config/database.yml
 WORKDIR /root

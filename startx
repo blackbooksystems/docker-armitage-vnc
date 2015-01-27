@@ -1,17 +1,7 @@
 #!/bin/bash
-PASS=${PASS:-"armitage"}
-
-killall -9 Xvnc 2>/dev/null
-rm -r /tmp/.* 2>/dev/null
-
-expect <<EOF
-set timeout 20
-	spawn vncpasswd
-	expect {
-		-exact "Password:" { send "$PASS\r"; exp_continue }
-		-exact "Verify:" { send "$PASS\r"; exp_continue }
-		-exact "Would you like to enter a view-only password \(y/n\)?" { send "n\r"; exp_continue }
-	}
-EOF
-
-vncserver :1 -name LXDE -rfbport 59000 -fg 2>/dev/null
+XSTARTUP=`ps aux | grep xstartup | grep -v 'grep\|log' | awk '{print $12}'`
+if [ "$XSTARTUP" != "/root/.vnc/xstartup" ]; then
+	killall Xvnc ssh-agent menu-cached &>/dev/null
+	rm -r /tmp/.* &>/dev/null
+        vncserver :1 -name LXDE -rfbport 59000 -fg 2>/dev/null
+fi

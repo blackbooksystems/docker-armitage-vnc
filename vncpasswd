@@ -1,0 +1,10 @@
+#!/bin/bash
+PASS=${PASS:-"armitage"}
+expect <<EOF
+	spawn vncpasswd
+	expect {
+		-exact "Password:" { send "$PASS\r"; exp_continue } &>/dev/null
+		-exact "Verify:" { send "$PASS\r"; exp_continue } &>/dev/null
+		-exact "Would you like to enter a view-only password \(y/n\)?" { send "n\r"; exp_continue } &>/dev/null
+	}
+EOF
