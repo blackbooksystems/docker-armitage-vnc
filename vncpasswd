@@ -1,5 +1,5 @@
 #!/bin/bash
-PASS=${PASS:-"armitage"}
+PASS=${PASS:-"docker"}
 LENGTH=`echo -n $PASS | wc -c`
 if [ "$LENGTH" -lt "6" ]; then
 	echo -e "\x1B[01;33mYour VNC password is less than\x1B[0m" "\x1B[01;31m6 character.\x1B[0m" "\x1B[01;33mSetting to default.\x1B[0m"

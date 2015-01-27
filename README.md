@@ -1,4 +1,4 @@
-Run with the ***PASS*** environment variable set to 6 or more characters to set the VNC password else it will default to ***armitage***.
+Run with the ***PASS*** environment variable set to 6 or more characters to set the VNC password else it will default to ***docker***.
 
 The VNC server port is ***59000***.
 
