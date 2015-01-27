@@ -23,7 +23,7 @@ RUN git clone --depth=1 https://github.com/rapid7/metasploit-framework.git /opt/
 	rm -rf .git
 
 RUN /etc/init.d/postgresql start && \
-	su - postgres -c "psql -c \"ALTER USER postgres WITH ENCRYPTED PASSWORD 'msf';\"" && \
+	su - postgres -c "psql -c \"ALTER USER postgres WITH SUPERUSER PASSWORD 'msf';\"" && \
 	/etc/init.d/postgresql stop
 
 RUN mkdir /etc/service/postgresql && \
