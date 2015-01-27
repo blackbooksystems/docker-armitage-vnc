@@ -42,14 +42,16 @@ RUN mkdir /root/.vnc /root/Desktop && \
 	echo "pkill vncconfig\nvncconfig -nowin &\nstartlxde" > /root/.vnc/xstartup && \
 	chmod +x /root/.vnc/xstartup /usr/bin/startx /etc/service/vncserver/run /etc/service/postgresql/run && \
 	sed -i -e '160s/^/#/' -e '160iExec=lxterminal --working-directory=/root' /usr/share/applications/lxterminal.desktop && \
-	ln -s /opt/metasploit-framework/msf* /usr/bin/ && \
-	ln -s /opt/* /root/Desktop/ && \
 	cp /usr/share/applications/lxterminal.desktop /root/Desktop/ && \
 	rm /usr/local/share/applications/zenmap.desktop && \
+	ln -s /opt/metasploit-framework/msf* /usr/bin/ && \
+	ln -s /opt/* /root/Desktop/ && \
 	echo -n /root > /etc/container_environment/HOME
 
 ADD vncpasswd /etc/my_init.d/
 ADD database.yml /opt/metasploit-framework/config/
+ADD README.md /root/
 ENV MSF_DATABASE_CONFIG /opt/metasploit-framework/config/database.yml
 WORKDIR /root
+EXPOSE 59000
 ENTRYPOINT ["/sbin/my_init"]

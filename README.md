@@ -14,5 +14,5 @@ docker build --rm -t usertaken/armitage-vnc github.com/UserTaken/docker-armitage
 
 Run Example
 ```
-docker run -d --net host usertaken/armitage-vnc
+docker run -d --net host -e PASS=password usertaken/armitage-vnc
 ```
