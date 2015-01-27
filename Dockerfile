@@ -27,17 +27,20 @@ RUN /etc/init.d/postgresql start && \
 	/etc/init.d/postgresql stop
 
 RUN mkdir /etc/service/postgresql && \
-	echo "#!/bin/sh\nexec su - postgres -c '/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c config_file=/etc/postgresql/9.3/main/postgresql.conf'" \
-	> /etc/service/postgresql/run
+	echo "#!/bin/sh\nexec su - postgres -c '/usr/lib/postgresql/9.3/bin/postgres -D /var/lib/postgresql/9.3/main -c \
+	config_file=/etc/postgresql/9.3/main/postgresql.conf'" > /etc/service/postgresql/run
 
 RUN mkdir /etc/service/vncserver && \
 	echo "#!/bin/sh\nexec /usr/bin/startx" > /etc/service/vncserver/run
 
+RUN echo '#!/bin/bash\n\nkillall Xvnc ssh-agent menu-cached &>/dev/null\nrm -r /tmp/.* &>/dev/null\nsleep 2 \
+	\nvncserver :1 -name LXDE -rfbport 59000 -fg' > /usr/bin/startx
+
 RUN curl http://www.fastandeasyhacking.com/download/armitage141120.tgz | tar xz -C /opt/
 
 RUN mkdir /root/.vnc /root/Desktop && \
-	echo "pkill vncconfig\nvncconfig -nowin&\nstartlxde" > /root/.vnc/xstartup && \
-	chmod +x /root/.vnc/xstartup /etc/service/vncserver/run /etc/service/postgresql/run && \
+	echo "pkill vncconfig\nvncconfig -nowin &\nstartlxde" > /root/.vnc/xstartup && \
+	chmod +x /root/.vnc/xstartup /usr/bin/startx /etc/service/vncserver/run /etc/service/postgresql/run && \
 	sed -i -e '160s/^/#/' -e '160iExec=lxterminal --working-directory=/root' /usr/share/applications/lxterminal.desktop && \
 	ln -s /opt/metasploit-framework/msf* /usr/bin/ && \
 	ln -s /opt/* /root/Desktop/ && \
@@ -45,7 +48,6 @@ RUN mkdir /root/.vnc /root/Desktop && \
 	rm /usr/local/share/applications/zenmap.desktop && \
 	echo -n /root > /etc/container_environment/HOME
 
-ADD startx /usr/bin/
 ADD vncpasswd /etc/my_init.d/
 ADD database.yml /opt/metasploit-framework/config/
 ENV MSF_DATABASE_CONFIG /opt/metasploit-framework/config/database.yml

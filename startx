@@ -1,7 +1,0 @@
-#!/bin/bash
-XSTARTUP=`ps aux | grep xstartup | grep -v 'grep\|log' | awk '{print $12}'`
-if [ "$XSTARTUP" != "/root/.vnc/xstartup" ]; then
-	killall Xvnc ssh-agent menu-cached &>/dev/null
-	rm -r /tmp/.* &>/dev/null
-        vncserver :1 -name LXDE -rfbport 59000 -fg 2>/dev/null
-fi
