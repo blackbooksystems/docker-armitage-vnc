@@ -12,7 +12,7 @@ RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/
 RUN git clone --depth=1 https://github.com/nmap/nmap.git && \
 	cd nmap && \
 	./configure && \
-	make && \
+	make -j && \
 	make install && \
 	rm -rf /nmap
 
@@ -23,7 +23,7 @@ RUN git clone --depth=1 https://github.com/rapid7/metasploit-framework.git /opt/
 	rm -rf .git
 
 RUN /etc/init.d/postgresql start && \
-	su - postgres -c "psql -c \"ALTER USER postgres WITH SUPERUSER PASSWORD 'msf';\"" && \
+	su - postgres -c "psql -c \"ALTER USER postgres WITH SUPERUSER ENCRYPTED PASSWORD 'msf';\"" && \
 	/etc/init.d/postgresql stop
 
 RUN mkdir /etc/service/postgresql && \
