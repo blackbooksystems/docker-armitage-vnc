@@ -2,7 +2,7 @@ FROM phusion/baseimage:latest
 MAINTAINER UserTaken <elysian@live.com>
 RUN apt-get update && apt-get install htop net-tools expect man xserver-xorg-core \
 	make gcc g++ patch libreadline-dev libssl-dev libpq5 libpq-dev zlib1g-dev \
-	libreadline5 libsqlite3-dev libpcap-dev autoconf git postgresql openjdk-7-jdk\
+	libreadline5 libsqlite3-dev libpcap-dev autoconf git postgresql openjdk-7-jdk \
 	libxml2-dev libxslt1-dev libyaml-dev ruby ruby-dev python lxde netsurf \
 	x11-xserver-utils -y --no-install-recommends
 
