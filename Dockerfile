@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install htop net-tools expect man xserver-xorg-cor
 	libxml2-dev libxslt1-dev libyaml-dev ruby ruby-dev python lxde netsurf \
 	x11-xserver-utils -y --no-install-recommends
 
-RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20141210git74cff2e4-3ubuntu1_amd64.deb && \
+RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20150205git11167e1f-3ubuntu1_amd64.deb && \
 	dpkg -i *.deb || apt-get install -fy --no-install-recommends && rm *.deb
 
 RUN git clone --depth=1 https://github.com/nmap/nmap.git && \
@@ -33,7 +33,7 @@ RUN mkdir /etc/service/postgresql && \
 RUN mkdir /etc/service/vncserver && \
 	echo "#!/bin/sh\nexec /usr/bin/startx" > /etc/service/vncserver/run
 
-RUN echo '#!/bin/bash\n\nkillall Xvnc ssh-agent menu-cached &>/dev/null\nrm -r /tmp/.* &>/dev/null\nsleep 2 \
+RUN echo '#!/bin/bash\n\nkillall Xvnc ssh-agent menu-cached &>/dev/null\nrm -rf /tmp/.* &>/dev/null\nsleep 2 \
 	\nvncserver :1 -name LXDE -rfbport 59000 -fg' > /usr/bin/startx
 
 RUN curl http://www.fastandeasyhacking.com/download/armitage141120.tgz | tar xz -C /opt/
