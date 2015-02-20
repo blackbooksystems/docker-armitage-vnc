@@ -1,26 +1,27 @@
 FROM phusion/baseimage:latest
 MAINTAINER UserTaken <elysian@live.com>
-RUN apt-get update && apt-get install htop net-tools expect man xserver-xorg-core \
+RUN apt-add-repository ppa:brightbox/ruby-ng -y && \
+	apt-get update && apt-get install htop net-tools expect man xserver-xorg-core \
 	make gcc g++ patch libreadline-dev libssl-dev libpq5 libpq-dev zlib1g-dev \
 	libreadline5 libsqlite3-dev libpcap-dev autoconf git postgresql openjdk-7-jdk \
-	libxml2-dev libxslt1-dev libyaml-dev ruby ruby-dev python lxde netsurf \
+	libxml2-dev libxslt1-dev libyaml-dev ruby2.2 ruby2.2-dev python lxde netsurf \
 	x11-xserver-utils -y --no-install-recommends
 
-RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20150205git11167e1f-3ubuntu1_amd64.deb && \
+RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20150216gitf481203d-3ubuntu1_amd64.deb && \
 	dpkg -i *.deb || apt-get install -fy --no-install-recommends && rm *.deb
 
 RUN git clone --depth=1 https://github.com/nmap/nmap.git && \
 	cd nmap && \
 	./configure && \
-	make -j && \
+	make && \
 	make install && \
-	rm -rf /nmap
+	rm -rf ../nmap
 
 RUN git clone --depth=1 https://github.com/rapid7/metasploit-framework.git /opt/metasploit-framework && \
 	cd /opt/metasploit-framework/ && \
 	gem install bundler && \
 	bundle install && \
-	rm -rf .git
+	rm -rf .git /var/lib/gems/2.2.0/cache
 
 RUN /etc/init.d/postgresql start && \
 	su - postgres -c "psql -c \"ALTER USER postgres WITH SUPERUSER ENCRYPTED PASSWORD 'msf';\"" && \
