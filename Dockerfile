@@ -1,5 +1,6 @@
 FROM phusion/baseimage:latest
 MAINTAINER UserTaken <elysian@live.com>
+VOLUME ["/opt", "/tmp"]
 RUN apt-add-repository ppa:brightbox/ruby-ng -y && \
 	apt-get update && apt-get install htop net-tools expect man xserver-xorg-core \
 	make gcc g++ patch libreadline-dev libssl-dev libpq5 libpq-dev zlib1g-dev \
@@ -7,7 +8,7 @@ RUN apt-add-repository ppa:brightbox/ruby-ng -y && \
 	libxml2-dev libxslt1-dev libyaml-dev ruby2.2 ruby2.2-dev python lxde netsurf \
 	x11-xserver-utils -y --no-install-recommends
 
-RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20150216gitf481203d-3ubuntu1_amd64.deb && \
+RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20150308git59b4bc56-3ubuntu1_amd64.deb && \
 	dpkg -i *.deb || apt-get install -fy --no-install-recommends && rm *.deb
 
 RUN git clone --depth=1 https://github.com/nmap/nmap.git && \
