@@ -1,6 +1,5 @@
 FROM phusion/baseimage:latest
 MAINTAINER UserTaken <elysian@live.com>
-VOLUME ["/opt", "/tmp"]
 RUN apt-add-repository ppa:brightbox/ruby-ng -y && \
 	apt-get update && apt-get install htop net-tools expect man xserver-xorg-core \
 	make gcc g++ patch libreadline-dev libssl-dev libpq5 libpq-dev zlib1g-dev \
@@ -8,12 +7,12 @@ RUN apt-add-repository ppa:brightbox/ruby-ng -y && \
 	libxml2-dev libxslt1-dev libyaml-dev ruby2.2 ruby2.2-dev python lxde netsurf \
 	x11-xserver-utils -y --no-install-recommends
 
-RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20150308git59b4bc56-3ubuntu1_amd64.deb && \
+RUN curl -O http://tigervnc.sourceforge.net/tiger.nightly/ubuntu-14.04LTS/amd64/tigervncserver_1.4.80+20150310git59b4bc56-3ubuntu1_amd64.deb && \
 	dpkg -i *.deb || apt-get install -fy --no-install-recommends && rm *.deb
 
 RUN git clone --depth=1 https://github.com/nmap/nmap.git && \
 	cd nmap && \
-	./configure && \
+	./configure --without-zenmap && \
 	make && \
 	make install && \
 	rm -rf ../nmap
@@ -42,16 +41,15 @@ RUN curl http://www.fastandeasyhacking.com/download/armitage141120.tgz | tar xz 
 
 RUN mkdir /root/.vnc /root/Desktop && \
 	echo "pkill vncconfig\nvncconfig -nowin &\nstartlxde" > /root/.vnc/xstartup && \
-	chmod +x /root/.vnc/xstartup /usr/bin/startx /etc/service/vncserver/run /etc/service/postgresql/run && \
 	sed -i -e '160s/^/#/' -e '160iExec=lxterminal --working-directory=/root' /usr/share/applications/lxterminal.desktop && \
 	cp /usr/share/applications/lxterminal.desktop /root/Desktop/ && \
-	rm /usr/local/share/applications/zenmap.desktop && \
 	ln -s /opt/metasploit-framework/msf* /usr/bin/ && \
 	ln -s /opt/* /root/Desktop/ && \
+	chmod +x /root/.vnc/xstartup /usr/bin/startx /etc/service/vncserver/run /etc/service/postgresql/run && \
 	echo -n /root > /etc/container_environment/HOME
 
-ADD vncpasswd /etc/my_init.d/
-ADD database.yml /opt/metasploit-framework/config/
+ADD https://raw.githubusercontent.com/UserTaken/docker-metasploit-framework/master/database.yml /opt/metasploit-framework/config/
+COPY vncpasswd /etc/my_init.d/
 ENV MSF_DATABASE_CONFIG /opt/metasploit-framework/config/database.yml
 WORKDIR /root
 EXPOSE 59000
